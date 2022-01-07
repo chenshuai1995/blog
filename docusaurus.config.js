@@ -21,27 +21,16 @@ const config = {
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        pages: {
-          path: "src/pages",
-          // 指定 pages 的路由路径，因为 blog 作为主页了
-          routeBasePath: "/pages",
-        },
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
-          // blog作为主页
-          routeBasePath: "/",
-          path: "./blog",
           showReadingTime: true,
-          blogSidebarCount: 5,
-          blogSidebarTitle: "Recent posts",
-          feedOptions: {
-            type: "all",
-            copyright: `Copyright © ${new Date().getFullYear()} icodex, Inc.`,
-          },
+          // Please change this to your repo.
+          editUrl:
+            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
