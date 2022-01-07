@@ -15,22 +15,38 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'chenshuai1995', // Usually your GitHub org/user name.
   projectName: 'blog', // Usually your repo name.
+  plugins: [
+    "@docusaurus/theme-live-codeblock",
+    path.resolve(__dirname, "./src/plugins/webpackConfig.js"),
+  ],
+  stylesheets: [
+    {
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css",
+      integrity:
+        "sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc",
+      crossorigin: "anonymous",
+    },
+  ],
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
+        pages: {
+          path: "src/pages",
+          // 指定 pages 的路由路径，因为 blog 作为主页了
+          routeBasePath: "/pages",
+        },
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          sidebarPath: require.resolve("./sidebars.js"),
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
+          editUrl: ({ docPath }) => {
+            return `https://github.com/wood3n/icodex-next/tree/master/docs/${docPath}`;
+          },
         },
         blog: {
-          // showReadingTime: true,
-          // // Please change this to your repo.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           // blog作为主页
           routeBasePath: "/",
           path: "./blog",
@@ -43,7 +59,11 @@ const config = {
           },
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "UA-153188913-1",
+          anonymizeIP: true,
         },
       }),
     ],
@@ -51,78 +71,141 @@ const config = {
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    {
+      hideableSidebar: false,
+      metadata: [
+        {
+          name: "keywords",
+          content:
+            "frontend, react, javascript, css, react, vue, typescript, docusaurus, blog, personal blog, personal website",
+        },
+      ],
+      // 开启 algolia
+      // algolia: {
+      //   // If Algolia did not provide you any appId, use 'BH4D9OD16A'
+      //   appId: "YOUR_APP_ID",
+
+      //   // Public API key: it is safe to commit it
+      //   apiKey: "YOUR_SEARCH_API_KEY",
+
+      //   indexName: "YOUR_INDEX_NAME",
+
+      //   // Optional: see doc section below
+      //   contextualSearch: true,
+
+      //   // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+      //   externalUrlRegex: "external\\.com|domain\\.com",
+
+      //   // Optional: Algolia search parameters
+      //   searchParameters: {},
+
+      //   //... other Algolia params
+      // },
       navbar: {
-        title: 'My Site',
+        title: "icodex",
+        hideOnScroll: true,
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: "icodex",
+          src: "img/logo.png",
         },
         items: [
+          { to: "/pages/project", label: "My Project", position: "right" },
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Tutorial',
+            type: "dropdown",
+            label: "Skill",
+            position: "right",
+            items: [
+              {
+                type: "doc",
+                label: "JavaScript",
+                docId: "javascript/类型/类型定义",
+              },
+              {
+                type: "doc",
+                label: "CSS",
+                docId: "css/CSS代码规范",
+              },
+              {
+                type: "doc",
+                label: "TypeScript",
+                docId: "typescript/tsconfig",
+              },
+              {
+                type: "doc",
+                label: "React",
+                docId: "react/hooks/常用hooks",
+              },
+              {
+                type: "doc",
+                label: "NodeJS",
+                docId: "nodejs/index",
+              },
+              {
+                type: "doc",
+                label: "Engineer",
+                docId: "engineer/index",
+              },
+            ],
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right',
+            type: "dropdown",
+            label: "Learn",
+            position: "right",
+            items: [
+              {
+                type: "doc",
+                label: "Network",
+                docId: "network/网速与带宽",
+              },
+              {
+                type: "doc",
+                label: "Algorithm",
+                docId: "algorithm/算法分析",
+              },
+            ],
+          },
+          {
+            type: "doc",
+            label: "Tool",
+            position: "right",
+            docId: "tools/git",
+          },
+          {
+            href: "https://github.com/wood3n/icodex-next",
+            position: "right",
+            // custom logo in custom.css
+            className: "header-github-link",
+            "aria-label": "GitHub repository",
+          },
+          // {
+          //   href: "https://icodex.me/blog/rss.xml",
+          //   position: "right",
+          //   // custom logo in custom.css
+          //   className: "header-rss-link",
+          // },
+          {
+            type: "search",
+            position: "right",
           },
         ],
       },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      liveCodeBlock: {
+        /**
+         * The position of the live playground, above or under the editor
+         * Possible values: "top" | "bottom"
+         */
+        playgroundPosition: "bottom",
       },
       prism: {
-        theme: lightCodeTheme,
+        theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
+        defaultLanguage: "javascript",
       },
-    }),
+    },
+  i18n: {
+    defaultLocale: "zh-CN",
+    locales: ["zh-CN"],
+  },
 };
 
 module.exports = config;
